@@ -28,22 +28,47 @@
     "test": "mocha -R spec"
   },
   "devDependencies": {
-    "verb-tag-jscomments": ">= 0.2.0",
+    "mocha": "*",
+    "should": "^4.1.0",
     "verb": ">= 0.2.6",
-    "mocha": "*"
+    "verb-tag-jscomments": ">= 0.2.0"
   },
   "keywords": [
-    "docs",
-    "documentation",
-    "generate",
-    "generator",
-    "markdown",
-    "templates",
-    "verb"
+    "check",
+    "deep",
+    "dot",
+    "find",
+    "get",
+    "has",
+    "hasown",
+    "key",
+    "keys",
+    "nested",
+    "notation",
+    "object",
+    "path",
+    "paths",
+    "pick",
+    "prop",
+    "properties",
+    "property",
+    "props",
+    "segment",
+    "set",
+    "string",
+    "type",
+    "type-of",
+    "typeof",
+    "util",
+    "utilities",
+    "utility",
+    "utils",
+    "value",
+    "values"
   ],
   "dependencies": {
-    "get-object": "^0.1.3",
-    "get-value": "^0.2.2",
-    "isobject": "^0.2.0"
+    "get-value": "^0.3.2",
+    "isobject": "^0.2.0",
+    "preserve": "^0.1.3"
   }
 }
