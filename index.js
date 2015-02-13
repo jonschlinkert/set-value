@@ -1,14 +1,13 @@
 /*!
  * set-object <https://github.com/jonschlinkert/set-object>
  *
- * Copyright (c) 2014 Jon Schlinkert, contributors.
+ * Copyright (c) 2014-2015 Jon Schlinkert.
  * Licensed under the MIT license.
  */
 
 'use strict';
 
 var isObject = require('isobject');
-var Tokens = require('preserve');
 var get = require('get-value');
 
 module.exports = function set(obj, prop, val) {
@@ -16,14 +15,12 @@ module.exports = function set(obj, prop, val) {
     return obj;
   }
 
-  var tokens = new Tokens(/\\\./g);
-  prop = tokens.before(prop);
-
-  var parts = (/^([\s\S]+)\.([\s\S]+)$/).exec(prop);
+  prop = prop.split('\\.').join('__ESC__');
+  var parts = (/^(.+)\.(.+)$/).exec(prop);
   if (parts) {
     create(obj, parts[1])[parts[2]] = val;
   } else {
-    prop = tokens.after(prop).replace(/\\\./g, '.');
+    prop = prop.split('__ESC__').join('.');
     obj[prop] = val;
     return obj;
   }
@@ -49,10 +46,10 @@ function forEach(arr, fn, thisArg) {
   }
 
   var len = arr.length;
-  var i = -1;
+  var i = 0;
 
-  while (++i < len) {
-    if (fn.call(thisArg, arr[i], i, arr) === false) {
+  while (i < len) {
+    if (fn.call(thisArg, arr[i++], i, arr) === false) {
       break;
     }
   }

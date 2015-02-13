@@ -1,8 +1,8 @@
 /*!
  * set-object <https://github.com/jonschlinkert/set-object>
  *
- * Copyright (c) 2014 Jon Schlinkert, contributors.
- * Licensed under the MIT License
+ * Copyright (c) 2014-2015 Jon Schlinkert.
+ * Licensed under the MIT license.
  */
 
 'use strict';
@@ -15,6 +15,12 @@ describe('set', function() {
     var o = {};
     set(o, 'a.b', 'c');
     o.a.b.should.equal('c');
+  });
+
+  it('should create a deeply nested property if it does not already exist:', function() {
+    var o = {};
+    set(o, 'a.b.c.d.e', 'c');
+    o.a.b.c.d.e.should.equal('c');
   });
 
   it('should not create a nested property if it does already exist:', function() {
