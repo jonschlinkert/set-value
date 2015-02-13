@@ -1,7 +1,7 @@
 {
   "name": "set-object",
   "description": "Create nested objects and any intermediaries using `a.b.c` paths.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/jonschlinkert/set-object",
   "author": {
     "name": "Jon Schlinkert",
@@ -17,27 +17,28 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/jonschlinkert/set-object/blob/master/LICENSE-MIT"
+      "url": "https://github.com/jonschlinkert/set-object/blob/master/LICENSE"
     }
+  ],
+  "files": [
+    "index.js"
   ],
   "main": "index.js",
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha"
+  },
+  "dependencies": {
+    "get-value": "^1.0.1",
+    "isobject": "^0.2.0"
   },
   "devDependencies": {
     "mocha": "*",
-    "should": "^4.1.0",
-    "verb": ">= 0.2.6",
-    "verb-tag-jscomments": ">= 0.2.0"
+    "should": "^4.1.0"
   },
   "keywords": [
-    "check",
-    "deep",
-    "dot",
-    "find",
     "get",
     "has",
     "hasown",
@@ -46,29 +47,12 @@
     "nested",
     "notation",
     "object",
-    "path",
-    "paths",
-    "pick",
     "prop",
     "properties",
     "property",
     "props",
-    "segment",
     "set",
-    "string",
-    "type",
-    "type-of",
-    "typeof",
-    "util",
-    "utilities",
-    "utility",
-    "utils",
     "value",
     "values"
-  ],
-  "dependencies": {
-    "get-value": "^0.3.2",
-    "isobject": "^0.2.0",
-    "preserve": "^0.1.3"
-  }
+  ]
 }
