@@ -62,7 +62,7 @@ describe('set', function() {
     set({a: 'aaa', b: 'b'}, 'a', 'bbb').should.eql({a: 'bbb', b: 'b'});
   });
 
-  it('should set a value only.', function () {
+  it('should set a deeply nested value.', function () {
     set({a: 'a', b: {c: 'd'}}, 'b.c.d', 'eee').should.eql({a: 'a', b: {c: {d: 'eee'}}});
   });
 

@@ -8,6 +8,7 @@
 'use strict';
 
 var isObject = require('isobject');
+var nc = require('noncharacters');
 var get = require('get-value');
 
 module.exports = function set(obj, path, val) {
@@ -57,9 +58,9 @@ function forEach(arr, fn, thisArg) {
 }
 
 function escape(str) {
-  return str.split('\\.').join('__DOT__');
+  return str.split('\\.').join(nc[1]);
 }
 
 function unescape(str) {
-  return str.split('__DOT__').join('.');
+  return str.split(nc[1]).join('.');
 }
