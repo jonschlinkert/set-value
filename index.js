@@ -1,8 +1,8 @@
 /*!
- * set-object <https://github.com/jonschlinkert/set-object>
+ * set-value <https://github.com/jonschlinkert/set-value>
  *
- * Copyright (c) 2014-2015 Jon Schlinkert.
- * Licensed under the MIT license.
+ * Copyright (c) 2014-2015, Jon Schlinkert.
+ * Licensed under the MIT License.
  */
 
 'use strict';
@@ -10,18 +10,18 @@
 var isObject = require('isobject');
 var get = require('get-value');
 
-module.exports = function set(obj, prop, val) {
-  if (prop == null) {
+module.exports = function set(obj, path, val) {
+  if (path == null) {
     return obj;
   }
 
-  prop = prop.split('\\.').join('__ESC__');
-  var parts = (/^(.+)\.(.+)$/).exec(prop);
-  if (parts) {
-    create(obj, parts[1])[parts[2]] = val;
+  path = escape(path);
+  var seg = (/^(.+)\.(.+)$/).exec(path);
+
+  if (seg) {
+    create(obj, seg[1])[seg[2]] = val;
   } else {
-    prop = prop.split('__ESC__').join('.');
-    obj[prop] = val;
+    obj[path] = val;
     return obj;
   }
   return obj;
@@ -32,6 +32,7 @@ function create(obj, path) {
     return obj;
   }
   forEach(path.split('.'), function (key) {
+    key = unescape(key);
     if (!obj[key] || !isObject(obj[key])) {
       obj[key] = {};
     }
@@ -53,4 +54,12 @@ function forEach(arr, fn, thisArg) {
       break;
     }
   }
+}
+
+function escape(str) {
+  return str.split('\\.').join('__DOT__');
+}
+
+function unescape(str) {
+  return str.split('__DOT__').join('.');
 }

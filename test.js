@@ -1,8 +1,8 @@
 /*!
- * set-object <https://github.com/jonschlinkert/set-object>
+ * set-value <https://github.com/jonschlinkert/set-value>
  *
- * Copyright (c) 2014-2015 Jon Schlinkert.
- * Licensed under the MIT license.
+ * Copyright (c) 2014-2015, Jon Schlinkert.
+ * Licensed under the MIT License.
  */
 
 'use strict';
@@ -23,6 +23,12 @@ describe('set', function() {
     o.a.b.c.d.e.should.equal('c');
   });
 
+  it('should recognize escaped dots:', function() {
+    var o = {};
+    set(o, 'a\\.b.c.d.e', 'c');
+    o['a.b'].c.d.e.should.equal('c');
+  });
+
   it('should not create a nested property if it does already exist:', function() {
     var first = {name: 'Halle'};
     var o = {a: first };
@@ -32,7 +38,7 @@ describe('set', function() {
     o.a.name.should.equal('Halle');
   });
 
-  it('shold support immediate properties:', function() {
+  it('should support immediate properties:', function() {
     var o = {};
     set(o, 'a', 'b');
     o.a.should.equal('b');
