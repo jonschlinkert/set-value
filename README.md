@@ -23,7 +23,7 @@ console.log(obj);
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/jonschlinkert/set-value/issues)
 
 ## Running tests
-Install dev dependencies.
+Install dev dependencies:
 
 ```bash
 npm i -d && npm test
@@ -32,7 +32,7 @@ npm i -d && npm test
 ## Author
 
 **Jon Schlinkert**
- 
+
 + [github/jonschlinkert](https://github.com/jonschlinkert)
 + [twitter/jonschlinkert](http://twitter.com/jonschlinkert) 
 

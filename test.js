@@ -29,6 +29,12 @@ describe('set', function() {
     o['a.b'].c.d.e.should.equal('c');
   });
 
+  it('should work with multple escaped dots:', function() {
+    var o = {};
+    set(o, 'e\\.f\\.g', 1);
+    o['e.f.g'].should.equal(1);
+  });
+
   it('should not create a nested property if it does already exist:', function() {
     var first = {name: 'Halle'};
     var o = {a: first };
