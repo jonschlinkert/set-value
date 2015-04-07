@@ -9,7 +9,6 @@
 
 var isObject = require('isobject');
 var nc = require('noncharacters');
-var get = require('get-value');
 
 module.exports = function setValue(obj, path, val) {
   if (path == null) {
