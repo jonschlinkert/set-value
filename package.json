@@ -1,7 +1,7 @@
 {
   "name": "set-value",
   "description": "Create nested values and any intermediaries using dot notation (`'a.b.c'`) paths.",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "homepage": "https://github.com/jonschlinkert/set-value",
   "author": {
     "name": "Jon Schlinkert",
