@@ -23,18 +23,6 @@ describe('set', function() {
     o.a.b.c.d.e.should.equal('c');
   });
 
-  it('should recognize escaped dots:', function() {
-    var o = {};
-    set(o, 'a\\.b.c.d.e', 'c');
-    o['a.b'].c.d.e.should.equal('c');
-  });
-
-  it('should work with multple escaped dots:', function() {
-    var o = {};
-    set(o, 'e\\.f\\.g', 1);
-    o['e.f.g'].should.equal(1);
-  });
-
   it('should not create a nested property if it does already exist:', function() {
     var first = {name: 'Halle'};
     var o = {a: first };
@@ -78,5 +66,25 @@ describe('set', function() {
 
   it('should set a value only.', function () {
     set({a: 'a', b: {c: 'd'}}, 'b.c').should.eql({a: 'a', b: {c: undefined}});
+  });
+});
+
+describe('escaping', function () {
+  it('should recognize escaped dots:', function() {
+    var o = {};
+    set(o, 'a\\.b.c.d.e', 'c');
+    o['a.b'].c.d.e.should.equal('c');
+  });
+
+  it('should work with multple escaped dots:', function() {
+    var o = {};
+    set(o, 'e\\.f\\.g', 1);
+    o['e.f.g'].should.equal(1);
+  });
+
+  it('should work with multple escaped dots:', function() {
+    var o = {};
+    set(o, 'e\\.f.g\\.h\\.i.j', 1);
+    o.should.eql({ 'e.f': { 'g.h.i': { j: 1 } } });
   });
 });

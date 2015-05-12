@@ -16,21 +16,18 @@ module.exports = function setValue(obj, path, val) {
   }
   path = escape(path);
   var seg = (/^(.+)\.(.+)$/).exec(path);
-
-  if (seg) {
-    create(obj, seg[1])[seg[2]] = val;
-  } else {
-    obj[unescape(path)] = val;
+  if (seg !== null) {
+    create(obj, seg[1], seg[2], val);
     return obj;
   }
+  obj[unescape(path)] = val;
   return obj;
 };
 
-function create(obj, path) {
+function create(obj, path, child, val) {
   if (!path) return obj;
   var arr = path.split('.');
   var len = arr.length, i = 0;
-
   while (len--) {
     var key = unescape(arr[i++]);
     if (!obj[key] || !isObject(obj[key])) {
@@ -38,7 +35,10 @@ function create(obj, path) {
     }
     obj = obj[key];
   }
-  return obj;
+  if (typeof child === 'string') {
+    child = unescape(child);
+  }
+  return (obj[child] = val);
 }
 
 /**
@@ -54,3 +54,4 @@ function escape(str) {
 function unescape(str) {
   return str.split(nc[1]).join('.');
 }
+
