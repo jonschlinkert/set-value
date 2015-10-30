@@ -51,13 +51,14 @@
     "related": {
       "description": "",
       "list": [
-        "has-own-deep",
+        "assign-value",
         "get-value",
         "set-value",
         "has-value",
-        "has-any",
-        "has-any-deep",
-        "any"
+        "merge-value",
+        "omit-value",
+        "unset-value",
+        "union-value"
       ]
     }
   }
