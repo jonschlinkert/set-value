@@ -3,23 +3,15 @@
   "description": "Create nested values and any intermediaries using dot notation (`'a.b.c'`) paths.",
   "version": "0.2.0",
   "homepage": "https://github.com/jonschlinkert/set-value",
-  "author": {
-    "name": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/jonschlinkert/set-value.git"
-  },
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "jonschlinkert/set-value",
   "bugs": {
     "url": "https://github.com/jonschlinkert/set-value/issues"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/jonschlinkert/set-value/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "files": [
-    "index.js"
+    "index.js",
+    "utils.js"
   ],
   "main": "index.js",
   "engines": {
@@ -29,11 +21,13 @@
     "test": "mocha"
   },
   "dependencies": {
+    "extend-shallow": "^2.0.1",
     "isobject": "^1.0.0",
-    "noncharacters": "^1.1.0"
+    "lazy-cache": "^0.2.4",
+    "to-object-path": "^0.2.0"
   },
   "devDependencies": {
-    "mocha": "*",
+    "mocha": "^2.3.3",
     "should": "^5.2.0"
   },
   "keywords": [
@@ -52,5 +46,19 @@
     "set",
     "value",
     "values"
-  ]
+  ],
+  "verb": {
+    "related": {
+      "description": "",
+      "list": [
+        "has-own-deep",
+        "get-value",
+        "set-value",
+        "has-value",
+        "has-any",
+        "has-any-deep",
+        "any"
+      ]
+    }
+  }
 }
