@@ -7,14 +7,45 @@
 
 'use strict';
 
+require('mocha');
+var assert = require('assert');
 var should = require('should');
 var set = require('./');
 
 describe('set', function() {
+  it('should return non-objects', function() {
+    var res = set('foo', 'a.b', 'c');
+    assert(res === 'foo');
+  });
+
   it('should create a nested property if it does not already exist:', function() {
     var o = {};
     set(o, 'a.b', 'c');
     o.a.b.should.equal('c');
+  });
+
+  it('should extend an existing value:', function() {
+    var o = {a: {b: {c: 'd'}}};
+    set(o, 'a.b', {y: 'z'});
+    o.a.b.should.eql({c: 'd', y: 'z'});
+  });
+
+  it('should extend an array:', function() {
+    var o = {a: []};
+    set(o, 'a.0', {y: 'z'});
+    assert(Array.isArray(o.a));
+    o.a[0].should.eql({y: 'z'});
+  });
+
+  it('should extend an object in an array:', function() {
+    var o = {a: [{}, {}, {}]};
+    set(o, 'a.0.a', {y: 'z'});
+    set(o, 'a.1.b', {y: 'z'});
+    set(o, 'a.2.c', {y: 'z'});
+    assert(Array.isArray(o.a));
+    o.a[0].a.should.eql({y: 'z'});
+    o.a[1].b.should.eql({y: 'z'});
+    o.a[2].c.should.eql({y: 'z'});
   });
 
   it('should create a deeply nested property if it does not already exist:', function() {
@@ -56,8 +87,14 @@ describe('set', function() {
     set({a: 'aaa', b: 'b'}, 'a', 'bbb').should.eql({a: 'bbb', b: 'b'});
   });
 
+  it('should support passing an array as the key', function () {
+    var actual = set({a: 'a', b: {c: 'd'}}, ['b', 'c', 'd'], 'eee');
+    actual.should.eql({a: 'a', b: {c: {d: 'eee'}}});
+  });
+
   it('should set a deeply nested value.', function () {
-    set({a: 'a', b: {c: 'd'}}, 'b.c.d', 'eee').should.eql({a: 'a', b: {c: {d: 'eee'}}});
+    var actual = set({a: 'a', b: {c: 'd'}}, 'b.c.d', 'eee');
+    actual.should.eql({a: 'a', b: {c: {d: 'eee'}}});
   });
 
   it('should return the entire object if no property is passed.', function () {
