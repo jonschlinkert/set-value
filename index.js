@@ -50,7 +50,3 @@ module.exports = function (obj, path, val) {
   }
   return res;
 };
-
-function arrayify(val) {
-  return Array.isArray(val) ? val : [val];
-}
