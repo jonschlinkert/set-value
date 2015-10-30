@@ -7,51 +7,50 @@
 
 'use strict';
 
-var isObject = require('isobject');
-var nc = require('noncharacters');
+var utils = require('./utils');
 
-module.exports = function setValue(obj, path, val) {
-  if (path == null) {
+module.exports = function (obj, path, val) {
+  if (typeof obj !== 'object') return obj;
+
+  if (Array.isArray(path)) {
+    path = utils.toPath(path);
+  }
+
+  if (typeof path !== 'string') {
     return obj;
   }
-  path = escape(path);
-  var seg = (/^(.+)\.(.+)$/).exec(path);
-  if (seg !== null) {
-    create(obj, seg[1], seg[2], val);
-    return obj;
-  }
-  obj[unescape(path)] = val;
-  return obj;
-};
 
-function create(obj, path, child, val) {
-  if (!path) return obj;
-  var arr = path.split('.');
-  var len = arr.length, i = 0;
-  while (len--) {
-    var key = unescape(arr[i++]);
-    if (!obj[key] || !isObject(obj[key])) {
+  var segs = path.split('.');
+  var len = segs.length, i = -1;
+  var res = obj;
+  var last;
+
+  while (++i < len) {
+    var key = segs[i];
+
+    while (key[key.length - 1] === '\\') {
+      key = key.slice(0, -1) + '.' + segs[++i];
+    }
+
+    if (i === len - 1) {
+      last = key;
+      break;
+    }
+
+    if (typeof obj[key] !== 'object') {
       obj[key] = {};
     }
     obj = obj[key];
   }
-  if (typeof child === 'string') {
-    child = unescape(child);
+
+  if (obj.hasOwnProperty(last) && typeof obj[last] === 'object') {
+    utils.extend(obj[last], val);
+  } else {
+    obj[last] = val;
   }
-  return (obj[child] = val);
-}
+  return res;
+};
 
-/**
- * Escape => `\\.`
- */
-function escape(str) {
-  return str.split('\\.').join(nc[1]);
+function arrayify(val) {
+  return Array.isArray(val) ? val : [val];
 }
-
-/**
- * Unescaped dots
- */
-function unescape(str) {
-  return str.split(nc[1]).join('.');
-}
-
