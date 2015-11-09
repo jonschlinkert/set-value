@@ -44,7 +44,12 @@ module.exports = function (obj, path, val) {
   }
 
   if (obj.hasOwnProperty(last) && typeof obj[last] === 'object') {
-    utils.extend(obj[last], val);
+    if (utils.isObject(val)) {
+      utils.extend(obj[last], val);
+    } else {
+      obj[last] = val;
+    }
+
   } else {
     obj[last] = val;
   }

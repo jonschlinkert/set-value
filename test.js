@@ -30,6 +30,15 @@ describe('set', function() {
     o.a.b.should.eql({c: 'd', y: 'z'});
   });
 
+  it('should update an object value:', function() {
+    var o = {};
+    set(o, 'a', {b: 'c'});
+    set(o, 'a', {c: 'd'});
+    assert.deepEqual(o, {a: {b: 'c', c: 'd'}});
+    set(o, 'a', 'b');
+    assert.equal(o.a, 'b');
+  });
+
   it('should extend an array:', function() {
     var o = {a: []};
     set(o, 'a.0', {y: 'z'});
