@@ -22,13 +22,13 @@
   },
   "dependencies": {
     "extend-shallow": "^2.0.1",
-    "isobject": "^1.0.0",
+    "isobject": "^2.0.0",
     "lazy-cache": "^0.2.4",
     "to-object-path": "^0.2.0"
   },
   "devDependencies": {
-    "mocha": "^2.3.3",
-    "should": "^5.2.0"
+    "mocha": "*",
+    "should": "*"
   },
   "keywords": [
     "get",
@@ -46,20 +46,5 @@
     "set",
     "value",
     "values"
-  ],
-  "verb": {
-    "related": {
-      "description": "",
-      "list": [
-        "assign-value",
-        "get-value",
-        "set-value",
-        "has-value",
-        "merge-value",
-        "omit-value",
-        "unset-value",
-        "union-value"
-      ]
-    }
-  }
+  ]
 }
