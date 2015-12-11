@@ -48,8 +48,21 @@
     "values"
   ],
   "verb": {
+    "plugins": [
+      "gulp-format-md"
+    ],
     "related": {
-      "list": []
+      "description": "",
+      "list": [
+        "assign-value",
+        "get-value",
+        "set-value",
+        "has-value",
+        "merge-value",
+        "omit-value",
+        "unset-value",
+        "union-value"
+      ]
     }
   }
 }
