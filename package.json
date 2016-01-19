@@ -10,8 +10,7 @@
   },
   "license": "MIT",
   "files": [
-    "index.js",
-    "utils.js"
+    "index.js"
   ],
   "main": "index.js",
   "engines": {
@@ -23,10 +22,10 @@
   "dependencies": {
     "extend-shallow": "^2.0.1",
     "isobject": "^2.0.0",
-    "lazy-cache": "^0.2.4",
     "to-object-path": "^0.2.0"
   },
   "devDependencies": {
+    "gulp-format-md": "^0.1.5",
     "mocha": "*",
     "should": "*"
   },

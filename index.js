@@ -7,13 +7,17 @@
 
 'use strict';
 
-var utils = require('./utils');
+var toPath = require('to-object-path');
+var extend = require('extend-shallow');
+var isObject = require('isobject');
 
-module.exports = function (obj, path, val) {
-  if (typeof obj !== 'object') return obj;
+module.exports = function(obj, path, val) {
+  if (typeof obj !== 'object') {
+    return obj;
+  }
 
   if (Array.isArray(path)) {
-    path = utils.toPath(path);
+    path = toPath(path);
   }
 
   if (typeof path !== 'string') {
@@ -44,8 +48,8 @@ module.exports = function (obj, path, val) {
   }
 
   if (obj.hasOwnProperty(last) && typeof obj[last] === 'object') {
-    if (utils.isObject(val)) {
-      utils.extend(obj[last], val);
+    if (isObject(val)) {
+      extend(obj[last], val);
     } else {
       obj[last] = val;
     }
