@@ -4,6 +4,10 @@
   "version": "0.3.3",
   "homepage": "https://github.com/jonschlinkert/set-value",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "contributors": [
+    "Jon Schlinkert <jon.schlinkert@sellside.com> (http://twitter.com/jonschlinkert)",
+    "Vadim Demedes <vdemedes@gmail.com> (https://ava.li)"
+  ],
   "repository": "jonschlinkert/set-value",
   "bugs": {
     "url": "https://github.com/jonschlinkert/set-value/issues"
@@ -25,9 +29,8 @@
     "to-object-path": "^0.2.0"
   },
   "devDependencies": {
-    "gulp-format-md": "^0.1.5",
-    "mocha": "*",
-    "should": "*"
+    "gulp-format-md": "^0.1.10",
+    "mocha": "^3.0.2"
   },
   "keywords": [
     "get",
@@ -55,12 +58,12 @@
       "list": [
         "assign-value",
         "get-value",
-        "set-value",
         "has-value",
         "merge-value",
         "omit-value",
-        "unset-value",
-        "union-value"
+        "set-value",
+        "union-value",
+        "unset-value"
       ]
     }
   }

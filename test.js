@@ -77,7 +77,7 @@ describe('set', function() {
     assert.equal(o.a, 'b');
   });
 
-  it('should use property paths to set nested values from the source object.', function () {
+  it('should use property paths to set nested values from the source object.', function() {
     var o = {};
     set(o, 'a.locals.name', {first: 'Brian'});
     set(o, 'b.locals.name', {last: 'Woodward'});
@@ -85,41 +85,41 @@ describe('set', function() {
     assert.deepEqual(o, { a: {locals: {name: { first: 'Brian' }} }, b: {locals: {name: { last: 'Woodward' }} }});
   });
 
-  it('should add the property even if a value is not defined:', function () {
+  it('should add the property even if a value is not defined:', function() {
     var fixture = {};
     assert.deepEqual(set(fixture, 'a.locals.name'), {a: {locals: { name: undefined }}});
     assert.deepEqual(set(fixture, 'b.locals.name'), {b: {locals: { name: undefined }}, a: {locals: { name: undefined }}});
   });
 
-  it('should set the specified property.', function () {
+  it('should set the specified property.', function() {
     assert.deepEqual(set({a: 'aaa', b: 'b'}, 'a', 'bbb'), {a: 'bbb', b: 'b'});
   });
 
-  it('should support passing an array as the key', function () {
+  it('should support passing an array as the key', function() {
     var actual = set({a: 'a', b: {c: 'd'}}, ['b', 'c', 'd'], 'eee');
     assert.deepEqual(actual, {a: 'a', b: {c: {d: 'eee'}}});
   });
 
-  it('should set a deeply nested value.', function () {
+  it('should set a deeply nested value.', function() {
     var actual = set({a: 'a', b: {c: 'd'}}, 'b.c.d', 'eee');
     assert.deepEqual(actual, {a: 'a', b: {c: {d: 'eee'}}});
   });
 
-  it('should return the entire object if no property is passed.', function () {
+  it('should return the entire object if no property is passed.', function() {
     assert.deepEqual(set({a: 'a', b: {c: 'd'}}), {a: 'a', b: {c: 'd'}});
   });
 
-  it('should set a value only.', function () {
+  it('should set a value only.', function() {
     assert.deepEqual(set({a: 'a', b: {c: 'd'}}, 'b.c'), {a: 'a', b: {c: undefined}});
   });
 
-  it('should set non-plain objects', function (done) {
+  it('should set non-plain objects', function(done) {
     var o = {};
 
     set(o, 'a.b', new Date());
     var firstDate = o.a.b.getTime();
 
-    setTimeout(function () {
+    setTimeout(function() {
       set(o, 'a.b', new Date());
       var secondDate = o.a.b.getTime();
 
@@ -129,7 +129,7 @@ describe('set', function() {
   });
 });
 
-describe('escaping', function () {
+describe('escaping', function() {
   it('should recognize escaped dots:', function() {
     var o = {};
     set(o, 'a\\.b.c.d.e', 'c');
