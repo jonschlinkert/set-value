@@ -9,7 +9,7 @@
 
 var toPath = require('to-object-path');
 var extend = require('extend-shallow');
-var isObject = require('isobject');
+var isObject = require('is-plain-object');
 
 module.exports = function(obj, path, val) {
   if (typeof obj !== 'object') {

@@ -113,6 +113,21 @@ describe('set', function() {
   it('should set a value only.', function () {
     set({a: 'a', b: {c: 'd'}}, 'b.c').should.eql({a: 'a', b: {c: undefined}});
   });
+
+  it('should set non-plain objects', function (done) {
+    var o = {};
+
+    set(o, 'a.b', new Date());
+    var firstDate = o.a.b.getTime();
+
+    setTimeout(function () {
+      set(o, 'a.b', new Date());
+      var secondDate = o.a.b.getTime();
+
+      firstDate.should.not.eql(secondDate);
+      done();
+    }, 10);
+  });
 });
 
 describe('escaping', function () {
