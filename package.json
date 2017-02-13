@@ -26,7 +26,7 @@
   "dependencies": {
     "extend-shallow": "^2.0.1",
     "is-plain-object": "^2.0.1",
-    "to-object-path": "^0.2.0"
+    "to-object-path": "^0.3.0"
   },
   "devDependencies": {
     "gulp-format-md": "^0.1.10",
