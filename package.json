@@ -5,8 +5,9 @@
   "homepage": "https://github.com/jonschlinkert/set-value",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "contributors": [
+    "<wtgtybhertgeghgtwtg@gmail.com> (https://github.com/wtgtybhertgeghgtwtg)",
     "Jon Schlinkert <jon.schlinkert@sellside.com> (http://twitter.com/jonschlinkert)",
-    "Vadim Demedes <vdemedes@gmail.com> (https://ava.li)"
+    "Vadim Demedes <vdemedes@gmail.com> (https://vadimdemedes.com)"
   ],
   "repository": "jonschlinkert/set-value",
   "bugs": {
@@ -50,11 +51,15 @@
     "values"
   ],
   "verb": {
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
     "plugins": [
       "gulp-format-md"
     ],
     "related": {
-      "description": "",
       "list": [
         "assign-value",
         "get-value",
@@ -65,6 +70,9 @@
         "union-value",
         "unset-value"
       ]
+    },
+    "lint": {
+      "reflinks": true
     }
   }
 }
