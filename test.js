@@ -45,6 +45,17 @@ describe('set', function() {
     assert.deepEqual(o.a[0], {y: 'z'});
   });
 
+  it('should extend a function:', function() {
+    function log() {}
+    var warning = function() {};
+    var o = {};
+
+    set(o, 'helpers.foo', log);
+    set(o, 'helpers.foo.warning', warning);
+    assert.equal(typeof o.helpers.foo, 'function');
+    assert.equal(typeof o.helpers.foo.warning, 'function');
+  });
+
   it('should extend an object in an array:', function() {
     var o = {a: [{}, {}, {}]};
     set(o, 'a.0.a', {y: 'z'});
@@ -137,14 +148,12 @@ describe('escaping', function() {
   });
 
   it('should work with multple escaped dots:', function() {
-    var o = {};
-    set(o, 'e\\.f\\.g', 1);
-    assert.equal(o['e.f.g'], 1);
-  });
+    var obj1 = {};
+    set(obj1, 'e\\.f\\.g', 1);
+    assert.equal(obj1['e.f.g'], 1);
 
-  it('should work with multple escaped dots:', function() {
-    var o = {};
-    set(o, 'e\\.f.g\\.h\\.i.j', 1);
-    assert.deepEqual(o, { 'e.f': { 'g.h.i': { j: 1 } } });
+    var obj2 = {};
+    set(obj2, 'e\\.f.g\\.h\\.i.j', 1);
+    assert.deepEqual(obj2, { 'e.f': { 'g.h.i': { j: 1 } } });
   });
 });

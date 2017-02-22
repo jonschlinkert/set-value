@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "extend-shallow": "^2.0.1",
+    "is-extendable": "^0.1.1",
     "is-plain-object": "^2.0.1",
     "to-object-path": "^0.3.0"
   },

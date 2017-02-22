@@ -9,10 +9,11 @@
 
 var toPath = require('to-object-path');
 var extend = require('extend-shallow');
-var isObject = require('is-plain-object');
+var isPlainObject = require('is-plain-object');
+var isObject = require('is-extendable');
 
 module.exports = function(obj, path, val) {
-  if (typeof obj !== 'object') {
+  if (!isObject(obj)) {
     return obj;
   }
 
@@ -41,14 +42,14 @@ module.exports = function(obj, path, val) {
       break;
     }
 
-    if (typeof obj[key] !== 'object') {
+    if (!isObject(obj[key])) {
       obj[key] = {};
     }
     obj = obj[key];
   }
 
-  if (obj.hasOwnProperty(last) && typeof obj[last] === 'object') {
-    if (isObject(val)) {
+  if (obj.hasOwnProperty(last) && isObject(obj[last])) {
+    if (isPlainObject(val)) {
       extend(obj[last], val);
     } else {
       obj[last] = val;
@@ -59,3 +60,4 @@ module.exports = function(obj, path, val) {
   }
   return res;
 };
+
