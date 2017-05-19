@@ -5,9 +5,9 @@
   "homepage": "https://github.com/jonschlinkert/set-value",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "contributors": [
-    "<wtgtybhertgeghgtwtg@gmail.com> (https://github.com/wtgtybhertgeghgtwtg)",
-    "Jon Schlinkert <jon.schlinkert@sellside.com> (http://twitter.com/jonschlinkert)",
-    "Vadim Demedes <vdemedes@gmail.com> (https://vadimdemedes.com)"
+    "Jon Schlinkert (http://twitter.com/jonschlinkert)",
+    "(https://github.com/wtgtybhertgeghgtwtg)",
+    "Vadim Demedes (https://vadimdemedes.com)"
   ],
   "repository": "jonschlinkert/set-value",
   "bugs": {
@@ -31,8 +31,8 @@
     "to-object-path": "^0.3.0"
   },
   "devDependencies": {
-    "gulp-format-md": "^0.1.10",
-    "mocha": "^3.0.2"
+    "gulp-format-md": "^0.1.12",
+    "mocha": "^3.4.1"
   },
   "keywords": [
     "get",
