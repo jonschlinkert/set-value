@@ -111,6 +111,11 @@ describe('set', function() {
     assert.deepEqual(actual, {a: 'a', b: {c: {d: 'eee'}}});
   });
 
+  it('should work with nested arrays in keys', function() {
+    var actual = set({a: 'a', b: {c: 'd'}}, [['b'], ['c', 'd']], 'eee');
+    assert.deepEqual(actual, {a: 'a', b: {c: {d: 'eee'}}});
+  });
+
   it('should set a deeply nested value.', function() {
     var actual = set({a: 'a', b: {c: 'd'}}, 'b.c.d', 'eee');
     assert.deepEqual(actual, {a: 'a', b: {c: {d: 'eee'}}});
@@ -141,13 +146,49 @@ describe('set', function() {
 });
 
 describe('escaping', function() {
-  it('should recognize escaped dots:', function() {
+  it('should not split inside double quotes:', function() {
+    var o = {};
+    set(o, 'a."b.c.d".e', 'c');
+    assert.equal(o.a['b.c.d'].e, 'c');
+  });
+
+  it('should not split inside single quotes:', function() {
+    var o = {};
+    set(o, "a.'b.c.d'.e", 'c');
+    assert.equal(o.a['b.c.d'].e, 'c');
+  });
+
+  it('should not split inside square brackets:', function() {
+    var o = {};
+    set(o, "a.[b.c.d].e", 'c');
+    assert.equal(o.a['[b.c.d]'].e, 'c');
+  });
+
+  it('should not split inside parens:', function() {
+    var o = {};
+    set(o, "a.(b.c.d).e", 'c');
+    assert.equal(o.a['(b.c.d)'].e, 'c');
+  });
+
+  it('should not split inside angle brackets:', function() {
+    var o = {};
+    set(o, "a.<b.c.d>.e", 'c');
+    assert.equal(o.a['<b.c.d>'].e, 'c');
+  });
+
+  it('should not split inside curly braces:', function() {
+    var o = {};
+    set(o, "a.{b.c.d}.e", 'c');
+    assert.equal(o.a['{b.c.d}'].e, 'c');
+  });
+
+  it('should not split escaped dots:', function() {
     var o = {};
     set(o, 'a\\.b.c.d.e', 'c');
     assert.equal(o['a.b'].c.d.e, 'c');
   });
 
-  it('should work with multple escaped dots:', function() {
+  it('should work with multiple escaped dots:', function() {
     var obj1 = {};
     set(obj1, 'e\\.f\\.g', 1);
     assert.equal(obj1['e.f.g'], 1);

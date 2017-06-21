@@ -27,12 +27,12 @@
   "dependencies": {
     "extend-shallow": "^2.0.1",
     "is-extendable": "^0.1.1",
-    "is-plain-object": "^2.0.1",
-    "to-object-path": "^0.3.0"
+    "is-plain-object": "^2.0.3",
+    "split-string": "^3.0.1"
   },
   "devDependencies": {
     "gulp-format-md": "^0.1.12",
-    "mocha": "^3.4.1"
+    "mocha": "^3.4.2"
   },
   "keywords": [
     "get",
