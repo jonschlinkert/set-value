@@ -14,8 +14,10 @@ const set = require('./');
 
 describe('set', function() {
   it('should return non-objects', function() {
-    const res = set('foo', 'a.b', 'c');
+    var res = set('foo', 'a.b', 'c');
     assert.equal(res, 'foo');
+    res = set(null, 'a.b', 'c');
+    assert.equal(res, null);
   });
 
   it('should create a nested property if it does not already exist', function() {
