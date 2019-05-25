@@ -100,10 +100,8 @@ function createKey(pattern, options) {
 
 function isObject(val) {
   switch (typeof val) {
-    case 'null':
-      return false;
     case 'object':
-      return true;
+      return val !== null;
     case 'function':
       return true;
     default: {
