@@ -25,7 +25,7 @@ function set(target, path, value, options) {
     merge = Object.assign;
   }
 
-  const keys = isArray ? path : split(path, opts);
+  const keys = (isArray ? path : split(path, opts)).filter(isValidKey);
   const len = keys.length;
   const orig = target;
 
@@ -98,16 +98,12 @@ function createKey(pattern, options) {
   return id;
 }
 
+function isValidKey(key) {
+  return key !== '__proto__' && key !== 'constructor' && key !== 'prototype';
+}
+
 function isObject(val) {
-  switch (typeof val) {
-    case 'object':
-      return val !== null;
-    case 'function':
-      return true;
-    default: {
-      return false;
-    }
-  }
+  return val !== null && (typeof val === 'object' || typeof val === 'function');
 }
 
 set.memo = {};

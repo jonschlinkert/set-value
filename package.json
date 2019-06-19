@@ -36,7 +36,7 @@
     "dot-prop": "^4.2.0",
     "dot2val": "^1.2.2",
     "es5-dot-prop": "^4.1.1",
-    "gulp-format-md": "^1.0.0",
+    "gulp-format-md": "^2.0.0",
     "lodash.set": "^4.3.2",
     "minimist": "^1.2.0",
     "mocha": "^3.5.3",
@@ -124,7 +124,9 @@
       "set-deep",
       "set-deep-prop",
       "set-nested-prop",
-      "setvalue"
+      "setvalue",
+      "split-string",
+      "update"
     ]
   }
 }
