@@ -76,7 +76,7 @@ function split(path, options) {
 
   for (let i = 0; i < keys.length; i++) {
     let prop = keys[i];
-    while (prop && prop.slice(-1) === '\\' && keys[i + 1]) {
+    while (prop && prop.slice(-1) === '\\' && keys[i + 1] != null) {
       prop = prop.slice(0, -1) + char + keys[++i];
     }
     res.push(prop);
