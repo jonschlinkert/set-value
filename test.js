@@ -159,6 +159,12 @@ describe('escaping', function() {
     set(obj2, 'e\\.f.g\\.h\\.i.j', 1, { escape: true });
     assert.deepEqual(obj2, { 'e.f': { 'g.h.i': { j: 1 } } });
   });
+
+  it('should work with escaped dots as the last character', function() {
+    var o = {};
+    set(o, 'a\\.b.c.d\\.e\\.', 'c', { escape: true });
+    assert.equal(o['a.b'].c['d.e.'], 'c');
+  });
 });
 
 describe('options', function() {
