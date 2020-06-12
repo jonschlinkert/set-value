@@ -37,13 +37,13 @@ function set(target, path, value, options) {
   for (let i = 0; i < len; i++) {
     let prop = keys[i];
 
-    if (!isObject(target[prop])) {
-      target[prop] = {};
-    }
-
     if (i === len - 1) {
       result(target, prop, value, merge);
       break;
+    }
+
+    if (!isObject(target[prop])) {
+      target[prop] = {};
     }
 
     target = target[prop];
