@@ -37,6 +37,14 @@ function set(target, path, value, options) {
   for (let i = 0; i < len; i++) {
     let prop = keys[i];
 
+    if (i < len - 1 && !isNaN(keys[i + 1]) && !target[prop]) {
+      target[prop] = [];
+    }
+
+    if (!isNaN(prop)) {
+      target.push({});
+    }
+
     if (!isObject(target[prop])) {
       target[prop] = {};
     }
