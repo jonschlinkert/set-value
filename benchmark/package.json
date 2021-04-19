@@ -1,0 +1,23 @@
+{
+  "name": "set-value-benchmarks",
+  "description": "Node.js library and API for set-value-benchmarks",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "benchmarked": "^2.0.0",
+    "minimist": "^1.2.5",
+    "write": "^2.0.0"
+  },
+  "devDependencies": {
+    "deep-object": "^1.0.0",
+    "deep-property": "^1.1.0",
+    "deep-set": "^1.0.1",
+    "deephas": "^1.0.7",
+    "dot-prop": "^6.0.1",
+    "dot2val": "^1.2.2",
+    "es5-dot-prop": "^4.1.1",
+    "lodash.set": "^4.3.2",
+    "object-path-set": "^1.0.1",
+    "object-set": "^1.0.1"
+  }
+}

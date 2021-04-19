@@ -1,8 +1,13 @@
-const set = require('dot2val').set;
+'use strict';
 
-module.exports = function(obj, path, value) {
+const { set } = require('dot2val');
+
+module.exports = (obj, path, value) => {
   try {
     set(obj, path, value);
-  } catch (err) {}
+  } catch (err) {
+    // do nothing
+  }
   return obj;
 };
+
