@@ -19,7 +19,8 @@
   ],
   "license": "MIT",
   "files": [
-    "index.js"
+    "index.js",
+    "parse.js"
   ],
   "main": "index.js",
   "engines": {
@@ -29,7 +30,8 @@
     "test": "mocha"
   },
   "dependencies": {
-    "is-plain-object": "^2.0.4"
+    "is-plain-object": "^2.0.4",
+    "resolve-value": "^1.0.0"
   },
   "devDependencies": {
     "gulp-format-md": "^2.0.0",
