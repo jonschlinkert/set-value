@@ -33,7 +33,6 @@
   "devDependencies": {
     "gulp-format-md": "^2.0.0",
     "mocha": "^8.3.2",
-    "rxjs": "^6.6.7",
     "split-string": "^6.1.0"
   },
   "keywords": [
