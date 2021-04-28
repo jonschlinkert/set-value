@@ -2,6 +2,9 @@ os:
   - linux
   - osx
   - windows
+arch:
+  - amd64
+  - ppc64le
 language: node_js
 node_js:
   - node
