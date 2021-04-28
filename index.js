@@ -1,118 +1,162 @@
 /*!
  * set-value <https://github.com/jonschlinkert/set-value>
  *
- * Copyright (c) 2014-2018, Jon Schlinkert.
+ * Copyright (c) Jon Schlinkert (https://github.com/jonschlinkert).
  * Released under the MIT License.
  */
 
 'use strict';
 
-const isPlain = require('is-plain-object');
+const isPlainObject = require('is-plain-object');
 
-function set(target, path, value, options) {
-  if (!isObject(target)) {
-    return target;
+const isObject = val => {
+  return (typeof val === 'object' && val !== null) || typeof val === 'function';
+};
+
+const isUnsafeKey = key => {
+  return key === '__proto__' || key === 'constructor' || key === 'prototype';
+};
+
+const validateKey = key => {
+  if (isUnsafeKey(key)) {
+    throw new Error(`Cannot set unsafe key: "${key}"`);
+  }
+};
+
+const toString = input => {
+  return Array.isArray(input) ? input.flat().map(String).join(',') : input;
+};
+
+const createMemoKey = (input, options) => {
+  if (typeof input !== 'string' || !options) return input;
+  let key = input + ';';
+  if (options.arrays !== undefined) key += `arrays=${options.arrays};`;
+  if (options.separator !== undefined) key += `separator=${options.separator};`;
+  if (options.split !== undefined) key += `split=${options.split};`;
+  if (options.merge !== undefined) key += `merge=${options.merge};`;
+  if (options.preservePaths !== undefined) key += `preservePaths=${options.preservePaths};`;
+  return key;
+};
+
+const memoize = (input, options, fn) => {
+  const key = toString(options ? createMemoKey(input, options) : input);
+  validateKey(key);
+
+  const val = setValue.cache.get(key) || fn();
+  setValue.cache.set(key, val);
+  return val;
+};
+
+const isNumber = value => {
+  if (value.trim() !== '') {
+    const number = Number(value);
+    return { is: Number.isInteger(number), number };
+  }
+  return { is: false };
+};
+
+const splitString = (input, options) => {
+  const opts = options || {};
+  const sep = opts.separator || '.';
+  const preserve = sep === '/' ? false : opts.preservePaths;
+
+  if (typeof input === 'symbol') {
+    return [input];
   }
 
-  let opts = options || {};
-  const isArray = Array.isArray(path);
-  if (!isArray && typeof path !== 'string') {
-    return target;
+  if (typeof opts.split === 'function') {
+    return opts.split(input);
   }
 
-  let merge = opts.merge;
-  if (merge && typeof merge !== 'function') {
-    merge = Object.assign;
+  const keys = Array.isArray(input) ? input : input.split(sep);
+
+  if (typeof input === 'string' && preserve !== false && /\//.test(input)) {
+    return [input];
   }
 
-  const keys = (isArray ? path : split(path, opts)).filter(isValidKey);
+  for (let i = 0; i < keys.length; i++) {
+    if (typeof keys[i] !== 'string') break;
+    const { is, number } = isNumber(keys[i]);
+
+    if (is) {
+      keys[i] = number;
+      continue;
+    }
+
+    while (keys[i] && i < keys.length && keys[i].endsWith('\\') && typeof keys[i + 1] === 'string') {
+      keys[i] = keys[i].slice(0, -1) + sep + keys.splice(i + 1, 1);
+    }
+  }
+
+  return keys;
+};
+
+const split = (input, options) => {
+  return memoize(input, options, () => splitString(input, options));
+};
+
+const setProp = (obj, prop, value, options) => {
+  validateKey(prop);
+
+  // Delete property when "value" is undefined
+  if (value === undefined) {
+    delete obj[prop];
+
+  } else if (options && options.merge) {
+    const merge = options.merge === true ? Object.assign : options.merge;
+
+    // Only merge plain objects
+    if (merge && isPlainObject(obj[prop]) && isPlainObject(value)) {
+      obj[prop] = merge(obj[prop], value);
+    } else {
+      obj[prop] = value;
+    }
+
+  } else {
+    obj[prop] = value;
+  }
+
+  return obj;
+};
+
+const setValue = (obj, path, value, options) => {
+  if (!path) return obj;
+  if (!isObject(obj)) return obj;
+
+  const keys = split(path, options);
   const len = keys.length;
-  const orig = target;
-
-  if (!options && keys.length === 1) {
-    result(target, keys[0], value, merge);
-    return target;
-  }
+  const target = obj;
 
   for (let i = 0; i < len; i++) {
-    let prop = keys[i];
+    const key = keys[i];
+    const next = keys[i + 1];
 
-    if (i < len - 1 && !isNaN(keys[i + 1]) && !target[prop]) {
-      target[prop] = [];
-    }
+    validateKey(key);
 
-    if (!isNaN(prop)) {
-      target.push({});
-    }
-
-    if (!isObject(target[prop])) {
-      target[prop] = {};
-    }
-
-    if (i === len - 1) {
-      result(target, prop, value, merge);
+    if (next === undefined) {
+      setProp(obj, key, value, options);
       break;
     }
 
-    target = target[prop];
-  }
-
-  return orig;
-}
-
-function result(target, path, value, merge) {
-  if (merge && isPlain(target[path]) && isPlain(value)) {
-    target[path] = merge({}, target[path], value);
-  } else {
-    target[path] = value;
-  }
-}
-
-function split(path, options) {
-  const id = createKey(path, options);
-  if (set.memo[id]) return set.memo[id];
-
-  const char = (options && options.separator) ? options.separator : '.';
-  let keys = [];
-  let res = [];
-
-  if (options && typeof options.split === 'function') {
-    keys = options.split(path);
-  } else {
-    keys = path.split(char);
-  }
-
-  for (let i = 0; i < keys.length; i++) {
-    let prop = keys[i];
-    while (prop && prop.slice(-1) === '\\' && keys[i + 1] != null) {
-      prop = prop.slice(0, -1) + char + keys[++i];
+    if (typeof next === 'number' && !Array.isArray(obj[key])) {
+      obj[key] = [];
+      obj = obj[key];
+      continue;
     }
-    res.push(prop);
+
+    if (!isObject(obj[key])) {
+      obj[key] = {};
+    }
+
+    obj = obj[key];
   }
-  set.memo[id] = res;
-  return res;
-}
 
-function createKey(pattern, options) {
-  let id = pattern;
-  if (typeof options === 'undefined') {
-    return id + '';
-  }
-  const keys = Object.keys(options);
-  for (let i = 0; i < keys.length; i++) {
-    const key = keys[i];
-    id += ';' + key + '=' + String(options[key]);
-  }
-  return id;
-}
+  return target;
+};
 
-function isValidKey(key) {
-  return key !== '__proto__' && key !== 'constructor' && key !== 'prototype';
-}
+setValue.cache = new Map();
+setValue.clear = () => {
+  setValue.cache = new Map();
+};
 
-function isObject(val) {
-  return val !== null && (typeof val === 'object' || typeof val === 'function');
-}
-
-set.memo = {};
-module.exports = set;
+module.exports = setValue;

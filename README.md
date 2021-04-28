@@ -1,4 +1,4 @@
-# set-value [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W8YFZ425KND68) [![NPM version](https://img.shields.io/npm/v/set-value.svg?style=flat)](https://www.npmjs.com/package/set-value) [![NPM monthly downloads](https://img.shields.io/npm/dm/set-value.svg?style=flat)](https://npmjs.org/package/set-value) [![NPM total downloads](https://img.shields.io/npm/dt/set-value.svg?style=flat)](https://npmjs.org/package/set-value) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/set-value.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/set-value)
+# set-value [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/jonathanschlinkert?locale.x=en_US) [![NPM version](https://img.shields.io/npm/v/set-value.svg?style=flat)](https://www.npmjs.com/package/set-value) [![NPM monthly downloads](https://img.shields.io/npm/dm/set-value.svg?style=flat)](https://npmjs.org/package/set-value) [![NPM total downloads](https://img.shields.io/npm/dt/set-value.svg?style=flat)](https://npmjs.org/package/set-value)
 
 > Create nested values and any intermediaries using dot notation (`'a.b.c'`) paths.
 
@@ -6,7 +6,7 @@ Please consider following this project's author, [Jon Schlinkert](https://github
 
 ## Install
 
-Install with [npm](https://www.npmjs.com/):
+Install with [npm](https://www.npmjs.com/) (requires [Node.js](https://nodejs.org/en/) >=10.0):
 
 ```sh
 $ npm install --save set-value
@@ -20,25 +20,30 @@ $ npm install --save set-value
 
 ```js
 const set = require('set-value');
-set(object, prop, value);
+
+const obj = {};
+set(obj, 'a.b.c', 'd');
+
+console.log(obj);
+//=> { a: { b: { c: 'd' } } }
 ```
 
 ### Params
 
-* `object` **{object}**: The object to set `value` on
-* `prop` **{string}**: The property to set. Dot-notation may be used.
-* `value` **{any}**: The value to set on `object[prop]`
-
-## Examples
-
-Updates and returns the given object:
+Signature:
 
 ```js
-const obj = {};
-set(obj, 'a.b.c', 'd');
-console.log(obj);
-//=> { a: { b: { c: 'd' } } }
+set(object, property_path, value[, options]);
 ```
+
+* `object` **{Object}**: The object to set `value` on
+* `path` **{String|Symbol|Array}**: The [path](#object-paths) of the property to set.
+* `value` **{any}**: The value to set on `obj[prop]`
+* `options` **{Object}**: See all [available options](#options)
+
+### Object paths
+
+You may pass a string, symbol, or array of strings or symbols. By default, when a string is passed this library will split the string on `.` or a [custom separator](#options-separator) It's useful to pass an array
 
 ### Escaping
 
@@ -54,57 +59,109 @@ console.log(set({}, 'a\\.b\\.c', 'd'));
 //=> { 'a.b.c': 'd' }
 ```
 
+## Options
+
+### options.preservePaths
+
+Do not split properties that include a `/`. By default, set-value assumes that properties with a `/` are not intended to be split. This option allows you to disable default behavior.
+
+Note that this option cannot be used if `options.separator` is set to `/`.
+
+**Type**: `boolean`
+
+**Default**: `true`
+
+**Example**
+
+```js
+console.log(set({}, 'https://github.com', true));
+//=> { 'https://github.com': true }
+
+console.log(set({}, 'https://github.com', true, { preservePaths: false }));
+//=> { 'https://github': { com: true } }
+```
+
+### options.separator
+
+Custom separator to use for splitting object paths.
+
+**Type**: `string`
+
+**Default**: `.`
+
+**Example**
+
+```js
+console.log(set(obj, 'auth/userpass/users/bob', '*****', { separator: '/' }));
+//=> { auth: { userpass: { users: { bob: '*****' } } } }
+```
+
+### options.split
+
+Custom `.split()` function to use.
+
+### options.merge
+
+Allows you to update plain object values, instead of overwriting them.
+
+**Type**: `boolean|function` - A custom `merge` function may be defined if you need to deep merge. Otherwise, when `merge` is `true`, a shallow merge will be performed by `Object.assign()`.
+
+**Default**: `undefined`
+
+**Example**
+
+```js
+const obj = { foo: { bar: { baz: 'qux' } } };
+set(obj, 'foo.bar.fez', 'zzz', { merge: true });
+//=> { foo: { bar: { baz: 'qux', fez: 'zzz' } } }
+```
+
 ## Benchmarks
 
-_(benchmarks were run on a MacBook Pro 2.5 GHz Intel Core i7, 16 GB 1600 MHz DDR3)_.
-
-set-value is more reliable and has more features than dot-prop, without sacrificing performance.
+Benchmarks were run on a MacBook Pro 2.5 GHz Intel Core i7, 16 GB 1600 MHz DDR3.
 
 ```
 # deep (194 bytes)
-  deep-object x 629,744 ops/sec ±0.85% (88 runs sampled)
-  deep-property x 1,470,427 ops/sec ±0.94% (89 runs sampled)
-  deep-set x 1,401,089 ops/sec ±1.02% (91 runs sampled)
-  deephas x 590,005 ops/sec ±1.73% (86 runs sampled)
-  dot-prop x 1,261,408 ops/sec ±0.94% (90 runs sampled)
-  dot2val x 1,672,729 ops/sec ±1.12% (89 runs sampled)
-  es5-dot-prop x 1,313,018 ops/sec ±0.79% (91 runs sampled)
-  lodash-set x 1,074,464 ops/sec ±0.97% (93 runs sampled)
-  object-path-set x 961,198 ops/sec ±2.07% (74 runs sampled)
-  object-set x 258,438 ops/sec ±0.69% (90 runs sampled)
-  set-value x 1,976,843 ops/sec ±2.07% (89 runs sampled)
+  deep-object x 879,975 ops/sec ±0.85% (94 runs sampled)
+  deep-property x 1,746,617 ops/sec ±0.59% (96 runs sampled)
+  deephas x 792,449 ops/sec ±0.61% (94 runs sampled)
+  dot-prop x 1,258,403 ops/sec ±0.81% (93 runs sampled)
+  dot2val x 2,096,518 ops/sec ±0.71% (94 runs sampled)
+  es5-dot-prop x 1,627,431 ops/sec ±0.57% (94 runs sampled)
+  lodash-set x 1,100,116 ops/sec ±0.80% (94 runs sampled)
+  object-path-set x 1,292,062 ops/sec ±0.56% (91 runs sampled)
+  object-set x 276,868 ops/sec ±0.60% (92 runs sampled)
+  set-value x 2,587,076 ops/sec ±0.47% (92 runs sampled)
 
-  fastest is set-value (by 186% avg)
+  fastest is set-value (by 210% avg)
 
 # medium (98 bytes)
-  deep-object x 3,249,287 ops/sec ±1.04% (93 runs sampled)
-  deep-property x 3,409,307 ops/sec ±1.28% (88 runs sampled)
-  deep-set x 3,240,776 ops/sec ±1.13% (93 runs sampled)
-  deephas x 960,504 ops/sec ±1.39% (89 runs sampled)
-  dot-prop x 2,776,388 ops/sec ±0.80% (94 runs sampled)
-  dot2val x 3,889,791 ops/sec ±1.28% (91 runs sampled)
-  es5-dot-prop x 2,779,604 ops/sec ±1.32% (91 runs sampled)
-  lodash-set x 2,791,304 ops/sec ±0.75% (90 runs sampled)
-  object-path-set x 2,462,084 ops/sec ±1.51% (91 runs sampled)
-  object-set x 838,569 ops/sec ±0.87% (90 runs sampled)
-  set-value x 4,767,287 ops/sec ±1.21% (91 runs sampled)
+  deep-object x 5,823,296 ops/sec ±0.63% (92 runs sampled)
+  deep-property x 4,045,998 ops/sec ±0.69% (91 runs sampled)
+  deephas x 1,237,999 ops/sec ±0.56% (92 runs sampled)
+  dot-prop x 2,833,082 ops/sec ±0.82% (93 runs sampled)
+  dot2val x 4,669,511 ops/sec ±0.50% (94 runs sampled)
+  es5-dot-prop x 3,348,092 ops/sec ±0.71% (92 runs sampled)
+  lodash-set x 3,051,898 ops/sec ±0.61% (94 runs sampled)
+  object-path-set x 3,867,590 ops/sec ±0.48% (92 runs sampled)
+  object-set x 888,369 ops/sec ±0.52% (96 runs sampled)
+  set-value x 8,209,356 ops/sec ±0.68% (91 runs sampled)
 
-  fastest is set-value (by 181% avg)
+  fastest is set-value (by 248% avg)
 
 # shallow (101 bytes)
-  deep-object x 4,793,168 ops/sec ±0.75% (88 runs sampled)
-  deep-property x 4,669,218 ops/sec ±1.17% (90 runs sampled)
-  deep-set x 4,648,247 ops/sec ±0.73% (91 runs sampled)
-  deephas x 1,246,414 ops/sec ±1.67% (92 runs sampled)
-  dot-prop x 3,913,694 ops/sec ±1.23% (89 runs sampled)
-  dot2val x 5,428,829 ops/sec ±0.76% (92 runs sampled)
-  es5-dot-prop x 3,897,931 ops/sec ±1.19% (92 runs sampled)
-  lodash-set x 6,128,638 ops/sec ±0.95% (87 runs sampled)
-  object-path-set x 5,429,978 ops/sec ±3.31% (87 runs sampled)
-  object-set x 1,529,485 ops/sec ±2.37% (89 runs sampled)
-  set-value x 7,150,921 ops/sec ±1.58% (89 runs sampled)
+  deep-object x 9,558,659 ops/sec ±0.81% (92 runs sampled)
+  deep-property x 5,190,792 ops/sec ±0.72% (93 runs sampled)
+  deephas x 1,395,091 ops/sec ±0.55% (90 runs sampled)
+  dot-prop x 4,203,222 ops/sec ±0.67% (94 runs sampled)
+  dot2val x 5,908,936 ops/sec ±0.52% (93 runs sampled)
+  es5-dot-prop x 4,511,259 ops/sec ±0.65% (94 runs sampled)
+  lodash-set x 8,624,572 ops/sec ±0.87% (90 runs sampled)
+  object-path-set x 5,800,121 ops/sec ±0.73% (90 runs sampled)
+  object-set x 1,629,494 ops/sec ±0.68% (92 runs sampled)
+  set-value x 13,925,948 ops/sec ±0.68% (89 runs sampled)
 
-  fastest is set-value (by 172% avg)
+  fastest is set-value (by 268% avg)
 
 ```
 
@@ -216,11 +273,14 @@ You might also be interested in these projects:
 
 | **Commits** | **Contributor** |  
 | --- | --- |  
-| 73 | [jonschlinkert](https://github.com/jonschlinkert) |  
+| 79 | [jonschlinkert](https://github.com/jonschlinkert) |  
+| 4  | [doowb](https://github.com/doowb) |  
 | 2  | [mbelsky](https://github.com/mbelsky) |  
-| 1  | [doowb](https://github.com/doowb) |  
+| 1  | [dkebler](https://github.com/dkebler) |  
 | 1  | [GlennKintscher](https://github.com/GlennKintscher) |  
-| 1  | [vadimdemedes](https://github.com/vadimdemedes) |  
+| 1  | [petermorlion](https://github.com/petermorlion) |  
+| 1  | [abetomo](https://github.com/abetomo) |  
+| 1  | [zeidoo](https://github.com/zeidoo) |  
 | 1  | [wtgtybhertgeghgtwtg](https://github.com/wtgtybhertgeghgtwtg) |  
 
 ### Author
@@ -233,9 +293,9 @@ You might also be interested in these projects:
 
 ### License
 
-Copyright © 2020, [Jon Schlinkert](https://github.com/jonschlinkert).
+Copyright © 2021, [Jon Schlinkert](https://github.com/jonschlinkert).
 Released under the [MIT License](LICENSE).
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.8.0, on April 01, 2020._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.8.0, on April 27, 2021._

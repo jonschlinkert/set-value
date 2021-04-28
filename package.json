@@ -1,58 +1,48 @@
 {
   "name": "set-value",
-  "description": "Create nested values and any intermediaries using dot notation (`'a.b.c'`) paths.",
   "version": "3.0.2",
+  "description": "Create nested values and any intermediaries using dot notation (`'a.b.c'`) paths.",
+  "license": "MIT",
+  "repository": "jonschlinkert/set-value",
   "homepage": "https://github.com/jonschlinkert/set-value",
-  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "bugs": "https://github.com/jonschlinkert/set-value/issues",
+  "author": "Jon Schlinkert <jon.schlinkert@sellside.com> (https://github.com/jonschlinkert)",
+  "funding": [
+    "https://github.com/sponsors/jonschlinkert",
+    "https://paypal.me/jonathanschlinkert",
+    "https://jonschlinkert.dev/sponsor"
+  ],
   "contributors": [
     "Jon Schlinkert (http://twitter.com/jonschlinkert)",
     "(https://github.com/wtgtybhertgeghgtwtg)",
     "Vadim Demedes (https://vadimdemedes.com)"
   ],
-  "repository": "jonschlinkert/set-value",
-  "bugs": {
-    "url": "https://github.com/jonschlinkert/set-value/issues"
-  },
-  "license": "MIT",
   "files": [
     "index.js"
   ],
   "main": "index.js",
   "engines": {
-    "node": ">=6.0"
+    "node": ">=10.0"
   },
   "scripts": {
     "test": "mocha"
   },
   "dependencies": {
-    "is-plain-object": "^2.0.4",
-    "rxjs": "^6.5.5"
+    "is-plain-object": "^2.0.4"
   },
   "devDependencies": {
-    "benchmarked": "^2.0.0",
-    "deep-object": "^1.0.0",
-    "deep-property": "^1.1.0",
-    "deep-set": "^1.0.1",
-    "deephas": "^1.0.5",
-    "dot-prop": "^4.2.0",
-    "dot2val": "^1.2.2",
-    "es5-dot-prop": "^4.1.1",
     "gulp-format-md": "^2.0.0",
-    "lodash.set": "^4.3.2",
-    "minimist": "^1.2.0",
-    "mocha": "^3.5.3",
-    "object-path-set": "^1.0.0",
-    "object-set": "^1.0.1",
-    "split-string": "^5.0.4",
-    "write": "^1.0.3"
+    "mocha": "^8.3.2",
+    "rxjs": "^6.6.7",
+    "split-string": "^6.1.0"
   },
   "keywords": [
     "bury",
     "deep-get-set",
     "deep-object",
     "deep-property",
-    "deep-set",
     "deep-set-in",
+    "deep-set",
     "deephas",
     "dot-prop",
     "dot2val",
@@ -66,19 +56,22 @@
     "lodash.set",
     "nested",
     "notation",
-    "object",
-    "object-path",
     "object-path-set",
+    "object-path",
     "object-set",
+    "object",
+    "patch",
     "prop",
     "properties",
     "property",
     "props",
-    "set",
-    "set-deep",
+    "put",
     "set-deep-prop",
+    "set-deep",
     "set-nested-prop",
+    "set",
     "setvalue",
+    "split-string",
     "value",
     "values"
   ],
