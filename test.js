@@ -26,6 +26,17 @@ describe('set', function() {
     assert.equal(o.a.b, 'c');
   });
 
+  it('should create a nested array if it does not already exist', function() {
+    const o = {};
+    set(o, 'a.0', 'c');
+    set(o, 'a.1', 'd');
+    assert(Array.isArray(o.a));
+    assert.equal(o.a[0], 'c');
+    let actual = "";
+    o.a.map(i=> actual +=i);
+    assert.equal(actual, "cd");
+  });
+
   it('should merge an existing value with the given value', function() {
     var o = {a: {b: {c: 'd'}}};
     set(o, 'a.b', {y: 'z'}, { merge: true });

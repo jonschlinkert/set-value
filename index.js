@@ -38,7 +38,9 @@ function set(target, path, value, options) {
     let prop = keys[i];
 
     if (!isObject(target[prop])) {
-      target[prop] = {};
+      let nextProp = i + 1 < len ? keys[i + 1] : "";
+      let shouldBeArray = !isNaN(+nextProp);
+      target[prop] = shouldBeArray ? [] : {};
     }
 
     if (i === len - 1) {
