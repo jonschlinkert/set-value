@@ -26,6 +26,17 @@ describe('set', function() {
     assert.equal(o.a.b, 'c');
   });
 
+  it('should create a nested array if it does not already exist', function() {
+    const o = {};
+    set(o, 'a.0', 'c');
+    set(o, 'a.1', 'd');
+    assert(Array.isArray(o.a));
+    assert.equal(o.a[0], 'c');
+    let actual = "";
+    o.a.map(i=> actual +=i);
+    assert.equal(actual, "cd");
+  });
+
   it('should merge an existing value with the given value', function() {
     var o = {a: {b: {c: 'd'}}};
     set(o, 'a.b', {y: 'z'}, { merge: true });
@@ -199,25 +210,91 @@ describe('options', function() {
 
   it('should use a custom function to not split inside square brackets', function() {
     var o = {};
-    set(o, "a.[b.c.d].e", 'c', options);
+    set(o, 'a.[b.c.d].e', 'c', options);
     assert.equal(o.a['[b.c.d]'].e, 'c');
   });
 
   it('should use a custom function to not split inside parens', function() {
     var o = {};
-    set(o, "a.(b.c.d).e", 'c', options);
+    set(o, 'a.(b.c.d).e', 'c', options);
     assert.equal(o.a['(b.c.d)'].e, 'c');
   });
 
   it('should use a custom function to not split inside angle brackets', function() {
     var o = {};
-    set(o, "a.<b.c.d>.e", 'c', options);
+    set(o, 'a.<b.c.d>.e', 'c', options);
     assert.equal(o.a['<b.c.d>'].e, 'c');
   });
 
   it('should use a custom function to not split inside curly braces', function() {
     var o = {};
-    set(o, "a.{b.c.d}.e", 'c', options);
+    set(o, 'a.{b.c.d}.e', 'c', options);
     assert.equal(o.a['{b.c.d}'].e, 'c');
   });
+});
+
+const Rx = require('rxjs');
+const opers = require('rxjs/operators');
+
+var _value = 0;
+var o = {a: { b: {} } };
+var obs = Rx.from(new Rx.BehaviorSubject()).pipe(
+  opers.skip(1),
+);
+
+Object.defineProperty(o.a.b, 'c', {
+  configurable: true,
+  get() { return _value; },
+  set(value) {
+    _value = value;
+    obs.next(value);
+  }
+});
+
+describe('Setter with Observable', function() {
+  // const expected = 11;
+  var received = [];
+  const noop = () => {};
+  it('should only assign/emit once for each call of set', function(done) {
+    var subs = obs.subscribe(
+      data => { received.push(data); },
+      noop,
+      () => {
+        assert.equal(received.length, 1);
+        done();
+      }
+    );
+    set(o, 'a.b.c', 5);
+    subs.complete();
+  });
+
+  it('should work assignment via setter', function(done) {
+    received = null;
+    var subs = obs.subscribe(
+      data => { received = data; },
+      noop,
+      () => {
+        assert.equal(received, 10);
+        done();
+      }
+    );
+    set(o, 'a.b.c', 10);
+    subs.complete();
+  });
+
+  it('should work with merge of object via setter', function(done) {
+    received = null;
+    set(o, 'a.b.c', {foo: 'bar'});
+    var subs = obs.subscribe(
+      data => { received = data; },
+      noop,
+      () => {
+        assert.deepEqual(o.a.b.c, { foo: 'bar', bing: 'bong' });
+        done();
+      }
+    );
+    set(o, 'a.b.c', { bing: 'bong'}, {merge: true});
+    subs.complete();
+  });
+
 });

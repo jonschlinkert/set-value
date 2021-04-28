@@ -25,7 +25,8 @@
     "test": "mocha"
   },
   "dependencies": {
-    "is-plain-object": "^2.0.4"
+    "is-plain-object": "^2.0.4",
+    "rxjs": "^6.5.5"
   },
   "devDependencies": {
     "benchmarked": "^2.0.0",
