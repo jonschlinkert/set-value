@@ -81,6 +81,17 @@ describe('set', function() {
     assert.deepEqual(o.a[2].c, {y: 'z'});
   });
 
+  it('should create an array if it does not already exist', function() {
+    var o = {};
+    set(o, 'a.0.a', {y: 'z'});
+    set(o, 'a.1.b', {y: 'z'});
+    set(o, 'a.2.c', {y: 'z'});
+    assert(Array.isArray(o.a));
+    assert.deepEqual(o.a[0].a, {y: 'z'});
+    assert.deepEqual(o.a[1].b, {y: 'z'});
+    assert.deepEqual(o.a[2].c, {y: 'z'});
+  });
+
   it('should create a deeply nested property if it does not already exist', function() {
     var o = {};
     set(o, 'a.b.c.d.e', 'c');
