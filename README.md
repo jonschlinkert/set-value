@@ -83,7 +83,7 @@ console.log(set({}, 'https://github.com', true, { preservePaths: false }));
 
 ### options.separator
 
-Custom separator to use for splitting object paths.
+Custom separator(s) to use for splitting object paths.  One or more single character delimiters can be set
 
 **Type**: `string`
 
@@ -94,6 +94,26 @@ Custom separator to use for splitting object paths.
 ```js
 console.log(set(obj, 'auth/userpass/users/bob', '*****', { separator: '/' }));
 //=> { auth: { userpass: { users: { bob: '*****' } } } }
+console.log(set(obj, 'auth/userpass.users:bob', '*****', { separator: './:' }));
+//=> { auth: { userpass: { users: { bob: '*****' } } } }
+```
+
+### options.elSplit
+
+if set to true string elements within an array path will be split per other options.
+
+**Type**: `boolean`
+
+**Default**: false
+
+**Example**
+
+```js
+console.log(set(objs, ['one.two', 'three', key1], true);
+//=>  'one.two': { three: { [Symbol(key-1)]: true } },
+console.log(set(obj, ['one:two', key2, 'three'], true, { separator: ':', elSplit: true });
+//=>  one: { two: { [Symbol(key-2)]: { three: true } } },
+
 ```
 
 ### options.split

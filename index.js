@@ -58,8 +58,7 @@ const isNumber = value => {
 const splitString = (input, options) => {
   const opts = options || {};
   const sep = opts.separator || '.';
-  const preserve = sep === '/' ? false : opts.preservePaths;
-
+  const preserve = sep.includes('/') ? false : opts.preservePaths;
   if (typeof input === 'symbol') {
     return [input];
   }
@@ -68,11 +67,14 @@ const splitString = (input, options) => {
     return opts.split(input);
   }
 
-  const keys = Array.isArray(input) ? input : input.split(sep);
-
   if (typeof input === 'string' && preserve !== false && /\//.test(input)) {
     return [input];
   }
+
+  const regx = new RegExp(`(?<!\\\\)[${sep}]`, 'g')
+  const regxr = new RegExp('\\\\', 'g')
+  const splitr = i => i.split(regx).map(e => e.replace(regxr, ''))
+  const keys = Array.isArray(input) ? input.filter(Boolean).map(e => typeof e === 'string' && opts.elSplit ? splitr(e) : e).flat() : splitr(input)
 
   for (let i = 0; i < keys.length; i++) {
     if (typeof keys[i] !== 'string') break;
@@ -81,10 +83,6 @@ const splitString = (input, options) => {
     if (is) {
       keys[i] = number;
       continue;
-    }
-
-    while (keys[i] && i < keys.length && keys[i].endsWith('\\') && typeof keys[i + 1] === 'string') {
-      keys[i] = keys[i].slice(0, -1) + sep + keys.splice(i + 1, 1);
     }
   }
 

@@ -102,8 +102,8 @@ describe('set-value', () => {
     });
 
     it('should extend a function', () => {
-      const log = () => {};
-      const warning = () => {};
+      const log = () => { };
+      const warning = () => { };
       const o = {};
 
       set(o, 'helpers.foo', log);
@@ -169,7 +169,7 @@ describe('set-value', () => {
       set(o, 'a.b', new Date());
       const firstDate = o.a.b.getTime();
 
-      setTimeout(function() {
+      setTimeout(function () {
         set(o, 'a.b', new Date());
         const secondDate = o.a.b.getTime();
 
@@ -205,6 +205,12 @@ describe('set-value', () => {
       const obj2 = {};
       set(obj2, 'e\\.f.g\\.h\\.i.j', 1);
       assert.deepEqual(obj2, { 'e.f': { 'g.h.i': { j: 1 } } });
+    });
+
+    it('should work with multiple escaped any separator', () => {
+      const obj2 = {};
+      set(obj2, 'e\\.f.g\\/h\\%i.j', 1, { separator: './%' });
+      assert.deepEqual(obj2, { 'e.f': { 'g/h%i': { j: 1 } } });
     });
   });
 
@@ -261,11 +267,29 @@ describe('set-value', () => {
       assert.equal(o.a['"b'].c['d"'].e, 'c');
     });
 
-    it('should take a custom separator', () => {
+    it('should allow a custom separator', () => {
       const o = {};
       set(o, 'a/b/c/d/e', 'c', { separator: '/' });
       assert.equal(o.a.b.c.d.e, 'c');
     });
+
+    it('should allow multiple custom separators', () => {
+      const o = {};
+      set(o, 'a/b;c/d.e', 'c', { separator: '/;.' });
+      assert.equal(o.a.b.c.d.e, 'c');
+    });
+
+    it('should split any string elements of an array path if requested', () => {
+      const o = {};
+      const key1 = Symbol('key-1');
+      set(o, ['a.b', key1, 'c'], 'd');
+      assert.equal(o['a.b'][key1].c, 'd');
+
+      const o2 = {};
+      set(o2, ['z.b', key1, 'c'], 'd', { elSplit: true });
+      assert.equal(o2.z.b[key1].c, 'd');
+    });
+
 
     it('should use a custom function to not split inside double quotes', () => {
       const o = {};
