@@ -18,6 +18,9 @@ const isUnsafeKey = key => {
 };
 
 const validateKey = key => {
+  if (typeof key !== 'string' && typeof key !== 'number') {
+    key = String(key)
+  }
   if (isUnsafeKey(key)) {
     throw new Error(`Cannot set unsafe key: "${key}"`);
   }
