@@ -186,7 +186,7 @@ describe('set-value', () => {
       assert.equal(o['a.b'].c.d.e, 'c');
     });
 
-    it('should work with multiple escaped dots', () => {
+    it('should support multiple escaped dots', () => {
       const obj1 = {};
       set(obj1, 'e\\.f\\.g', 1);
       assert.equal(obj1['e.f.g'], 1);
@@ -196,7 +196,7 @@ describe('set-value', () => {
       assert.deepEqual(obj2, { 'e.f': { 'g.h.i': { j: 1 } } });
     });
 
-    it('should work with multiple escaped dots', () => {
+    it('should support multiple escaped dots', () => {
       const obj1 = {};
       const key = Symbol('key');
       set(obj1, [key, 'e.f', 'g'], 1);
@@ -205,6 +205,15 @@ describe('set-value', () => {
       const obj2 = {};
       set(obj2, 'e\\.f.g\\.h\\.i.j', 1);
       assert.deepEqual(obj2, { 'e.f': { 'g.h.i': { j: 1 } } });
+    });
+
+    it('should correctly parse multiple consecutive backslashes', () => {
+      assert.deepEqual(set.split('a.b.c'), ['a', 'b', 'c']);
+      assert.deepEqual(set.split('b\\.c\\.d'), ['b.c.d']);
+      assert.deepEqual(set.split('b\\\\.c\\.d'), ['b\\', 'c.d']);
+      assert.deepEqual(set.split('a.b\\.c'), ['a', 'b.c']);
+      assert.deepEqual(set.split('a.b\\\\.c'), ['a', 'b\\', 'c']);
+      assert.deepEqual(set.split('a.b\\\\\\.c'), ['a', 'b\\.c']);
     });
   });
 
