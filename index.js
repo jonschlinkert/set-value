@@ -40,6 +40,7 @@ const createMemoKey = (input, options) => {
   if (options.separator !== undefined) key += `separator=${options.separator};`;
   if (options.split !== undefined) key += `split=${options.split};`;
   if (options.merge !== undefined) key += `merge=${options.merge};`;
+  if (options.insert !== undefined) key += `insert=${options.insert};`;
   if (options.preservePaths !== undefined) key += `preservePaths=${options.preservePaths};`;
   return key;
 };
@@ -110,17 +111,11 @@ const assignProp = (obj, prop, value, options) => {
   // Delete property when "value" is undefined
   if (value === undefined) {
     deleteProperty(obj, prop);
-
-  } else if (options && options.merge) {
+  } else if (options && options.merge && isPlainObject(obj[prop]) && isPlainObject(value)) {
     const merge = options.merge === 'function' ? options.merge : Object.assign;
-
-    // Only merge plain objects
-    if (merge && isPlainObject(obj[prop]) && isPlainObject(value)) {
-      obj[prop] = merge(obj[prop], value);
-    } else {
-      obj[prop] = value;
-    }
-
+    obj[prop] = merge(obj[prop], value);
+  } else if (options && options.insert && Array.isArray(obj)) {
+    obj.splice(prop, 0, value)
   } else {
     obj[prop] = value;
   }
