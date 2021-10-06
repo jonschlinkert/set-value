@@ -51,5 +51,5 @@ module.exports = function(obj, prop, val) {
 };
 
 function isValidKey(key) {
-  return key !== '__proto__' && key !== 'constructor' && key !== 'prototype';
+  return key !== '__proto__' && key !== 'constructor' && key !== 'prototype' && !Array.isArray(obj[key]);
 }
