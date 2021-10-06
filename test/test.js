@@ -238,6 +238,18 @@ describe('set-value', () => {
     });
   });
 
+  describe('options.insert', () => {
+    it('should update an array by inserting the given value', () => {
+      const o = { a: ['a', 'b', 'd'] };
+      set(o, 'a.2', 'c', { insert: true });
+      assert.deepEqual(o.a, ['a', 'b', 'c', 'd']);
+
+      const obj = { path: { to: { array: ['b', 'c'] } } };
+      set(obj, 'path.to.array.0', 'a', { insert: true, merge: true });
+      assert.deepEqual(obj, { path: { to: { array: ['a', 'b', 'c'] } } });
+    });
+  });
+
   describe('options.preservePaths', () => {
     it('should split properties with a forward slash when preservePaths is false', () => {
       const obj = {};
