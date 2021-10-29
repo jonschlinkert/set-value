@@ -107,8 +107,8 @@ const split = (input, options) => {
 const assignProp = (obj, prop, value, options) => {
   validateKey(prop);
 
-  // Delete property when "value" is undefined
-  if (value === undefined) {
+  // Delete property when "value" is undefined and setUndefined is falsey
+  if (value === undefined && (!options || !options.setUndefined)) {
     deleteProperty(obj, prop);
 
   } else if (options && options.merge) {

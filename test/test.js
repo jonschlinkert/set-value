@@ -159,6 +159,29 @@ describe('set-value', () => {
       assert.deepEqual(set({ a: 'a', b: { c: 'd' } }, 'b.c'), { a: 'a', b: {} });
     });
 
+    it('should delete the property undefined when setUndefined is false', () => {
+      const fixture = {};
+      assert.deepEqual(set(fixture, 'a.locals.name', undefined, { setUndefined: false }), { a: { locals: {} } });
+      assert.deepEqual(set(fixture, 'b.locals.name', undefined, { setUndefined: false }), { b: { locals: {} }, a: { locals: {} } });
+      assert.deepEqual(set({ a: 'a', b: { c: 'd' } }, 'b.c', undefined, { setUndefined: false }), { a: 'a', b: {} });
+    });
+
+    it('should set the property undefined when setUndefined is true', () => {
+      const fixture = {};
+      assert.deepEqual(
+        set(fixture, 'a.locals.name', undefined, { setUndefined: true }),
+        { a: { locals: {name: undefined} } }
+      );
+      assert.deepEqual(
+        set(fixture, 'b.locals.name', undefined, { setUndefined: true }),
+        { b: { locals: {name: undefined} }, a: { locals: {name: undefined} } }
+      );
+      assert.deepEqual(
+        set({ a: 'a', b: { c: 'd' } }, 'b.c', undefined, { setUndefined: true }),
+        { a: 'a', b: { c: undefined } }
+      );
+    });
+
     it('should return the entire object if no property is passed.', () => {
       assert.deepEqual(set({ a: 'a', b: { c: 'd' } }), { a: 'a', b: { c: 'd' } });
     });
