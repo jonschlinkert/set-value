@@ -116,6 +116,25 @@ set(obj, 'foo.bar.fez', 'zzz', { merge: true });
 //=> { foo: { bar: { baz: 'qux', fez: 'zzz' } } }
 ```
 
+### options.setUndefined
+
+Set the value to undefined instead of deleting the property when the value is undefined.
+
+**Type**: `boolean`
+
+**Default**: `false`
+
+**Example**
+
+```js
+console.log(set({foo: 'bar', baz: 'foo'}, 'foo', undefined, { setUndefined:  false }));
+//=> { baz: 'foo' }
+
+console.log(set({foo: 'bar', baz: 'foo'}, 'foo', undefined, { setUndefined:  true }));
+//=> { foo: undefined, baz: 'foo' }
+```
+
+
 ## Benchmarks
 
 Benchmarks were run on a MacBook Pro 2.5 GHz Intel Core i7, 16 GB 1600 MHz DDR3.
@@ -271,18 +290,19 @@ You might also be interested in these projects:
 
 ### Contributors
 
-| **Commits** | **Contributor** |  
-| --- | --- |  
-| 87 | [jonschlinkert](https://github.com/jonschlinkert) |  
-| 4  | [doowb](https://github.com/doowb) |  
-| 2  | [mbelsky](https://github.com/mbelsky) |  
-| 1  | [dkebler](https://github.com/dkebler) |  
-| 1  | [GlennKintscher](https://github.com/GlennKintscher) |  
-| 1  | [petermorlion](https://github.com/petermorlion) |  
-| 1  | [abetomo](https://github.com/abetomo) |  
-| 1  | [zeidoo](https://github.com/zeidoo) |  
-| 1  | [ready-research](https://github.com/ready-research) |  
-| 1  | [wtgtybhertgeghgtwtg](https://github.com/wtgtybhertgeghgtwtg) |  
+| **Commits** | **Contributor** |
+| --- | --- |
+| 87 | [jonschlinkert](https://github.com/jonschlinkert) |
+| 4  | [doowb](https://github.com/doowb) |
+| 2  | [mbelsky](https://github.com/mbelsky) |
+| 1  | [dkebler](https://github.com/dkebler) |
+| 1  | [GlennKintscher](https://github.com/GlennKintscher) |
+| 1  | [petermorlion](https://github.com/petermorlion) |
+| 1  | [abetomo](https://github.com/abetomo) |
+| 1  | [zeidoo](https://github.com/zeidoo) |
+| 1  | [ready-research](https://github.com/ready-research) |
+| 1  | [wtgtybhertgeghgtwtg](https://github.com/wtgtybhertgeghgtwtg) |
+| 1  | [snowbldr](https://github.com/snowbldr) |
 
 ### Author
 
