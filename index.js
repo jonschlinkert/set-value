@@ -145,7 +145,7 @@ const setValue = (target, path, value, options) => {
       break;
     }
 
-    if (typeof next === 'number' && !Array.isArray(obj[key])) {
+    if (typeof next === 'number' && (typeof obj[key] !== 'object' || obj[key] === null)) {
       obj = obj[key] = [];
       continue;
     }

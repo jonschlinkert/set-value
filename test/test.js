@@ -123,6 +123,26 @@ describe('set-value', () => {
       assert.deepEqual(o.a[2].c, { y: 'z' });
     });
 
+    it('should not delete number properties from an object', ()=>{
+      const o = { a: { 0: 'foo', 1: 'bar' } }
+      set(o, 'a.0', 'baz')
+      assert.deepEqual(o, { a: { 0: 'baz', 1: 'bar' } })
+    })
+
+    it('should create an array if the target is null', ()=>{
+      const o = { a: null }
+      set(o, 'a.0', 'baz')
+      assert.deepEqual(o, { a: ['baz'] })
+    })
+
+    it('should create an array if the target is not an array or object', ()=>{
+      const o = { a: false, b: undefined, c: 5 }
+      set(o, 'a.0', 'foo')
+      set(o, 'b.0', 'bar')
+      set(o, 'c.0', 'baz')
+      assert.deepEqual(o, { a: ['foo'], b: ['bar'], c: ['baz'] })
+    })
+
     it('should create a deeply nested property if it does not already exist', () => {
       const o = {};
       set(o, 'a.b.c.d.e', 'c');
