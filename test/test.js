@@ -135,6 +135,14 @@ describe('set-value', () => {
       assert.deepEqual(o, { a: ['baz'] })
     })
 
+    it('should create an array if the target is not an array or object', ()=>{
+      const o = { a: false, b: undefined, c: 5 }
+      set(o, 'a.0', 'foo')
+      set(o, 'b.0', 'bar')
+      set(o, 'c.0', 'baz')
+      assert.deepEqual(o, { a: ['foo'], b: ['bar'], c: ['baz'] })
+    })
+
     it('should create a deeply nested property if it does not already exist', () => {
       const o = {};
       set(o, 'a.b.c.d.e', 'c');
