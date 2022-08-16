@@ -99,6 +99,10 @@ function createKey(pattern, options) {
 }
 
 function isValidKey(key) {
+  if (typeof key !== 'string' && typeof key !== 'number') {
+    key = String(key);
+  }
+
   return key !== '__proto__' && key !== 'constructor' && key !== 'prototype';
 }
 

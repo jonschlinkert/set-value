@@ -210,3 +210,12 @@ describe('options', function() {
     assert.equal(o.a['{b.c.d}'].e, 'c');
   });
 });
+
+describe('patches', function() {
+  it('should not allow setting an unsafe key', function() {
+    const o = {};
+    assert.equal({}.foo, undefined);
+    set(o, [['__proto__'], 'foo'], 'bar');
+    assert.equal({}.foo, undefined);
+  });
+});
