@@ -112,7 +112,7 @@ const assignProp = (obj, prop, value, options) => {
     deleteProperty(obj, prop);
 
   } else if (options && options.merge) {
-    const merge = options.merge === 'function' ? options.merge : Object.assign;
+    const merge = typeof options.merge === 'function' ? options.merge : Object.assign;
 
     // Only merge plain objects
     if (merge && isPlainObject(obj[prop]) && isPlainObject(value)) {
